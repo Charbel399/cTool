@@ -22,4 +22,4 @@ cTool provides a robust analysis of the results. If all the goals in the output 
 cTool is a comprehensive tool that aids stakeholders in making informed decisions by providing a clear understanding of the impact of their choices on the system's goals. It is an invaluable resource for any complex system where multiple stakeholders' decisions interact and influence the system's outcomes.
 
 
-<img src="https://i.ibb.co/rc6mjPr/c-Tool-drawio-1.png" width="250" height="250">
+<img src="https://i.ibb.co/rc6mjPr/c-Tool-drawio-1.png" width="400" height="400">
