@@ -40,6 +40,8 @@ def solve_formula(input_file, output_file):
     # Write the solutions to the output file
     with open(output_file, 'w') as f:
         json.dump(solutions, f, indent=2)
+    
+    print(f"Solutions have been generated to {output_file}")
 
 # Example usage:
 # solve_formula('input.json', 'output.json')
