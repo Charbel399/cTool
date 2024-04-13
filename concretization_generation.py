@@ -22,20 +22,20 @@ def store_may_elements(data):
             transitions[variable].append(transition['transitions'])
     return states, transitions
 
-def generate_concretization(initial_state_file, solutions_file, states_transitions_file, output_dir):
+def generate_concretization(initial_state_file, solutions_file, may_elements, output_dir):
     # Load the JSON data from the files
     with open(initial_state_file, 'r') as f:
         initial_state_data = json.load(f)
     with open(solutions_file, 'r') as f:
         solutions_data = json.load(f)
-    with open(states_transitions_file, 'r') as f:
-        states_transitions_data = json.load(f)
+    with open(may_elements, 'r') as f:
+        may_elements_data = json.load(f)
 
     # Get the true variables for each solution
     true_variables = store_true_variables(solutions_data)
 
     # Get the states and transitions for each variable
-    states, transitions = store_may_elements(states_transitions_data)
+    states, transitions = store_may_elements(may_elements_data)
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -45,7 +45,6 @@ def generate_concretization(initial_state_file, solutions_file, states_transitio
         updated_state_data = copy.deepcopy(initial_state_data)
         updated_state_data.pop("formula", None)
         updated_state_data.pop("variables", None)
-        print(solution, updated_state_data)
         for variable in variables:
             if variable in states and variable in transitions:
                 for state, transition in zip(states[variable], transitions[variable]):
