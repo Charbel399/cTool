@@ -28,7 +28,6 @@ def solve_formula(input_file, output_file):
     # Find all possible solutions
     solutions = {}
     i = 1
-    print(formula)
     while s.check() == sat:
         model = s.model()
         solution = {str(v): str(model[v]) for v in model}

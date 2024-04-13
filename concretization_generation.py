@@ -1,51 +1,61 @@
-import os
 import json
+import os
+import copy
 
-def generate_concretization(first_json_path, second_json_path, output_directory):
-    # Load the JSON files
-    with open(first_json_path, 'r') as f1, open(second_json_path, 'r') as f2:
-        first_json = json.load(f1)
-        second_json = json.load(f2)
+def store_true_variables(data):
+    true_variables = {}
+    for solution, variables in data.items():
+        true_variables[solution] = [var for var, value in variables.items() if value == "True"]
+    return true_variables
 
-    # Iterate through each solution in the first JSON file
-    for solution_key, solution_value in first_json.items():
-        # Create a copy of the second JSON
-        updated_json = second_json.copy()
+def store_may_elements(data):
+    states = {}
+    transitions = {}
+    for variable, value in data['may_elements'].items():
+        for state, transition in value.items():
+            if variable not in states:
+                states[variable] = []
+            states[variable].append(state)
 
-        # Iterate through each variable in the solution
-        for variable, value in solution_value.items():
-            # Check if the value is True
-            if value == "True":
-                # Check if the variable exists in may_elements of the second JSON
-                if variable in updated_json["may_elements"]:
-                    # Get the transitions for the variable
-                    transitions = updated_json["may_elements"][variable]
+            if variable not in transitions:
+                transitions[variable] = []
+            transitions[variable].append(transition['transitions'])
+    return states, transitions
 
-                    # Iterate through the transitions and add them to the states
-                    for transition_name, transition_value in transitions.items():
-                        # Get the target state for the transition
-                        target_state = transition_value.get("transitions", {}).get("target_state", transition_name)
-                        
-                        # Check if the target state exists in the states of the second JSON
-                        if target_state in updated_json["states"]:
-                            # Update existing state with transitions from may_elements
-                            updated_json["states"].setdefault(target_state, {}).setdefault("transitions", {}).update(transition_value["transitions"])
+def generate_concretization(initial_state_file, solutions_file, states_transitions_file, output_dir):
+    # Load the JSON data from the files
+    with open(initial_state_file, 'r') as f:
+        initial_state_data = json.load(f)
+    with open(solutions_file, 'r') as f:
+        solutions_data = json.load(f)
+    with open(states_transitions_file, 'r') as f:
+        states_transitions_data = json.load(f)
+
+    # Get the true variables for each solution
+    true_variables = store_true_variables(solutions_data)
+
+    # Get the states and transitions for each variable
+    states, transitions = store_may_elements(states_transitions_data)
+
+    # Create the output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Add the new states and transitions to the initial state for each solution
+    for solution, variables in true_variables.items():
+        updated_state_data = copy.deepcopy(initial_state_data)
+        updated_state_data.pop("formula", None)
+        updated_state_data.pop("variables", None)
+        print(solution, updated_state_data)
+        for variable in variables:
+            if variable in states and variable in transitions:
+                for state, transition in zip(states[variable], transitions[variable]):
+                        if state not in initial_state_data['states']:
+                            updated_state_data['states'][state] = {'transitions': transition}
                         else:
-                            # Add the state and transitions if it doesn't exist
-                            updated_json["states"][target_state] = transition_value
+                            updated_state_data['states'][state]['transitions'].update(transition)
 
-                else:
-                    print(f"Warning: {variable} not found in may_elements.")
+        # Write the updated state data to a new JSON file in the specified output directory
+        with open(os.path.join(output_dir, f'{solution}.json'), 'w') as f:
+            json.dump(updated_state_data, f, indent=2)
 
-        # Remove formula, variables, and may_elements
-        updated_json.pop("formula", None)
-        updated_json.pop("variables", None)
-        updated_json.pop("may_elements", None)
-
-        # Create directory if it doesn't exist
-        os.makedirs(output_directory, exist_ok=True)
-
-        # Write the updated JSON to a separate file for each solution
-        output_file = os.path.join(output_directory, f"{solution_key}.json")
-        with open(output_file, 'w') as outfile:
-            json.dump(updated_json, outfile, indent=4)
+    print(f"JSON files have been written to the '{output_dir}' directory.")
