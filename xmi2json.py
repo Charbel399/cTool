@@ -9,7 +9,7 @@ def xmi_2_json(file_path, output_path):
     namespaces = {'xsi': 'http://www.w3.org/2001/XMLSchema-instance'}
     
     data = {
-        "intElements": {},
+        "Goal_Model": {},
         "links": {}
     }
 
@@ -26,9 +26,9 @@ def xmi_2_json(file_path, output_path):
         }
         
         # Group intElements by type
-        if item["type"] not in data["intElements"]:
-            data["intElements"][item["type"]] = []
-        data["intElements"][item["type"]].append(item)
+        if item["type"] not in data["Goal_Model"]:
+            data["Goal_Model"][item["type"]] = []
+        data["Goal_Model"][item["type"]].append(item)
 
         # Add the id and name to the id_to_name dictionary
         id_to_name[element.attrib.get('id')] = element.attrib.get('name')

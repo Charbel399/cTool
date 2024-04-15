@@ -5,7 +5,7 @@ import xmi2json
 
 #Data Files
 xmi_file = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\inputs\\TorrentTO.xmi" #path xmi file
-xmi_2_json_output_file = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\xmi_2_json.json" 
+xmi_2_json_output_file = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\xmi_2_json.json" #output of where you want your converted xmi file to be stored
 z3_diagram_file = "C:\\Users\\ashle\OneDrive\\Desktop\\cTool\\inputs\\Initial_State.json" #path of diagram and z3 formula file
 z3_solutions_output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\solutions.json" #path of output for solutions for z3 solver
 uncertain_tasks_output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\uncertain_tasks.json" #path for output of uncertain tasks
