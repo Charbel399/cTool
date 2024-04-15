@@ -45,6 +45,7 @@ def generate_concretization(initial_state_file, solutions_file, may_elements, ou
         updated_state_data = copy.deepcopy(initial_state_data)
         updated_state_data.pop("formula", None)
         updated_state_data.pop("variables", None)
+        updated_state_data.pop("may_elements", None)
         for variable in variables:
             if variable in states and variable in transitions:
                 for state, transition in zip(states[variable], transitions[variable]):
