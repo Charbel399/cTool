@@ -1,0 +1,8 @@
+Design_Decision,May_Element 1,May_Element 2,Value
+D3.3. Compromise (C),Et,Ea,True
+D3.2. Selfish (S),Dt,,True
+D3.1. Benevolent (B),Bt,,True
+Without seeding (WNS),At,,False
+With Seeding (WS),At,,True
+Downloads w/o restart (DNR),Ct,,False
+Downloads with restart (DCR),Ct,,True
