@@ -1,0 +1,27 @@
+{
+  "states": {
+    "Seeding": {
+      "transitions": {
+        "/cancel()": "Idle",
+        "/restart()": "Leeching"
+      }
+    },
+    "Idle": {
+      "transitions": {
+        "/start()": "Leeching",
+        "/share()": "Seeding"
+      }
+    },
+    "Leeching": {
+      "transitions": {
+        "/cancel()": "Idle",
+        "/completed()": "Finishing"
+      }
+    },
+    "Finishing": {
+      "transitions": {
+        "/peersDone()": "Idle"
+      }
+    }
+  }
+}

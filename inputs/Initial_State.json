@@ -1,0 +1,26 @@
+{
+  "states": {
+    "Seeding": {
+      "transitions": {
+        "/cancel()": "Idle"
+      }
+    },
+    "Idle": {
+      "transitions": {
+        "/start()": "Leeching"
+      }
+    },
+    "Leeching": {
+      "transitions": {
+        "/cancel()": "Idle"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  "formula": "formula = Or(And(Not(At), Bt, Not(Dt), Not(Et), Not(Fs)), And(At, Not(Bt), Dt, Not(Et), Not(Fs)), And(At, Not(Bt), Not(Dt), Et, Fs)); formula = And(formula, At == Aa, Bt == Ba, Ca == Ct, Dt == Da, Et == Ea, Ea == Fs, Fs == Ga, Ga == Gt)",
+  "variables": ["At", "Bt", "Dt", "Et", "Fs", "Aa", "Ba", "Ca", "Da", "Ga", "Gt", "Ea", "Ct"]
+}

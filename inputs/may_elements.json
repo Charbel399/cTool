@@ -1,0 +1,45 @@
+{"may_elements": {
+    "At": {
+      "Idle": {
+        "transitions": {
+          "/share()": "Seeding"
+        }
+      }
+    },
+    "Dt": {
+      "Leeching": {
+        "transitions": {
+          "/completed()": "Idle"
+        }
+      }
+    },
+    "Ct": {
+      "Seeding": {
+        "transitions": {
+          "/restart()": "Leeching"
+        }
+      }
+    },
+    "Ea": {
+      "Leeching": {
+        "transitions": {
+          "/completed()": "Finishing"
+        }
+      }
+    },
+    "Bt": {
+      "Leeching": {
+        "transitions": {
+          "/completed()": "Seeding"
+        }
+      }
+    },
+    "Et": {
+      "Finishing": {
+        "transitions": {
+          "/peersDone()": "Idle"
+        }
+      }
+    }
+  }
+}
