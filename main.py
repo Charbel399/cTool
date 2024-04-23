@@ -1,4 +1,5 @@
 import extract_uncertainty_tasks
+import satisfied_design_decisions
 import concretization_generation
 import z3_solver
 import xmi2json
@@ -18,6 +19,8 @@ z3_solutions_output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Conc
 uncertain_tasks_output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\uncertain_tasks.json" #path for output of uncertain tasks
 output_diagram_solutions = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\solution_diagram" #path of the folder where solutions should be outputed
 merged_output_file = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Goal_Model.json"
+Goal_Model_Design_Decision_Output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Goal_Model_Satisfied_Design_Decision.json"
+satisfied_design_decisions_folder = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\solution_diagram\\Satisfied_Design_Decision"
 
 def merge_json_files(json1_path, json2_path, merged_output_path):
     # Read the content of the first JSON file
@@ -49,9 +52,11 @@ def main():
     extract_uncertainty_tasks.Uncertainty_tasks(Goal_Model,uncertain_tasks_output)
     merge_json_files(uncertain_tasks_output,xmi_2_json_output_file,merged_output_file)
     extract_uncertainty_tasks.extract_uncertainty(merged_output_file,uncertain_tasks_output)
+    satisfied_design_decisions.find_satisfied_design_decisions(uncertain_tasks_output,merged_output_file,Goal_Model_Design_Decision_Output)
     z3_solver.solve_formula(z3_diagram_file,z3_solutions_output)
     concretization_generation.generate_concretization(z3_diagram_file,z3_solutions_output,z3_diagram_file,output_diagram_solutions)
     filter.sort_solutions(z3_solutions_output,mapping_csv,output_diagram_solutions)
-
+    satisfied_design_decisions.print_files_for_folders(Goal_Model_Design_Decision_Output,output_diagram_solutions,satisfied_design_decisions_folder)
+    
 if __name__ == "__main__":
     main()
