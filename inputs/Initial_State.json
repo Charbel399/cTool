@@ -22,5 +22,50 @@
   
   
   "formula": "formula = Or(And(Not(At), Bt, Not(Dt), Not(Et), Not(Fs)), And(At, Not(Bt), Dt, Not(Et), Not(Fs)), And(At, Not(Bt), Not(Dt), Et, Fs)); formula = And(formula, At == Aa, Bt == Ba, Ca == Ct, Dt == Da, Et == Ea, Ea == Fs, Fs == Ga, Ga == Gt)",
-  "variables": ["At", "Bt", "Dt", "Et", "Fs", "Aa", "Ba", "Ca", "Da", "Ga", "Gt", "Ea", "Ct"]
+  "variables": ["At", "Bt", "Dt", "Et", "Fs", "Aa", "Ba", "Ca", "Da", "Ga", "Gt", "Ea", "Ct"],
+
+  "may_elements": {
+    "At": {
+      "Idle": {
+        "transitions": {
+          "/share()": "Seeding"
+        }
+      }
+    },
+    "Dt": {
+      "Leeching": {
+        "transitions": {
+          "/completed()": "Idle"
+        }
+      }
+    },
+    "Ct": {
+      "Seeding": {
+        "transitions": {
+          "/restart()": "Leeching"
+        }
+      }
+    },
+    "Ea": {
+      "Leeching": {
+        "transitions": {
+          "/completed()": "Finishing"
+        }
+      }
+    },
+    "Bt": {
+      "Leeching": {
+        "transitions": {
+          "/completed()": "Seeding"
+        }
+      }
+    },
+    "Et": {
+      "Finishing": {
+        "transitions": {
+          "/peersDone()": "Idle"
+        }
+      }
+    }
+  }
 }
