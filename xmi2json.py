@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import json
+import extract_uncertainty_tasks
 
 def xmi_2_json(file_path, output_path):
     tree = ET.parse(file_path)
@@ -93,7 +94,6 @@ def xmi_2_json(file_path, output_path):
                         if 'BeliefLink' not in data["links"]:
                             data["links"]['BeliefLink'] = []
                         data["links"]['BeliefLink'].append(item)
-
 
 
     save_json(data, output_path)
