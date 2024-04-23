@@ -41,3 +41,14 @@ def Uncertainty_tasks(file_path, output_file):
         json.dump(tasks_dict, f, indent=4)  # Use indent to format the output
 
     print(f"Results have been written to {output_file}")
+
+def extract_uncertainty(json_file_path, output_file_path):
+    with open(json_file_path, 'r') as file:
+        json_data = json.load(file)
+        uncertainty_data = json_data.get("Uncertainty")
+        if uncertainty_data:
+            with open(output_file_path, 'w') as output_file:
+                json.dump(uncertainty_data, output_file, indent=4)
+            print("Uncertainty data extracted and saved to:", output_file_path)
+        else:
+            print("No uncertainty data found.")
