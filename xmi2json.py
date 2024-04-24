@@ -102,5 +102,4 @@ def xmi_2_json(file_path, output_path):
 def save_json(data, output_path):
     with open(output_path, 'w') as f:
         json.dump(data, f, indent=4)
-    print(f'XMI file successfully converted to JSON and can be found in {output_path}')
 

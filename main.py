@@ -1,62 +1,183 @@
 import extract_uncertainty_tasks
+import tkinter as tk
+from tkinter import filedialog
 import satisfied_design_decisions
 import concretization_generation
 import z3_solver
 import xmi2json
 import filter
-import json
 import os 
-
-#Input Files
-Goal_Model = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\inputs\\TorrentTO.xmi" #path xmi file
-z3_diagram_file = "C:\\Users\\ashle\OneDrive\\Desktop\\cTool\\inputs\\Initial_State.json" #path of diagram and z3 formula file
-mapping_csv = "C:\\Users\\ashle\OneDrive\\Desktop\\cTool\\inputs\\goals2mayelements.csv"
+import merge_json_file
+import sys
 
 
-#Output Files
-xmi_2_json_output_file = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Goal_Model2.json" #output of where you want your converted xmi file to be stored
-z3_solutions_output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Concretizations.json" #path of output for solutions for z3 solver
-uncertain_tasks_output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\uncertain_tasks.json" #path for output of uncertain tasks
-output_diagram_solutions = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\solution_diagram" #path of the folder where solutions should be outputed
-merged_output_file = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Goal_Model.json"
-Goal_Model_Design_Decision_Output = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\Goal_Model_Satisfied_Design_Decision.json"
-satisfied_design_decisions_folder = "C:\\Users\\ashle\\OneDrive\\Desktop\\cTool\\outputs\\solution_diagram\\Satisfied_Design_Decision"
+class SimpleUI:
+    def __init__(self, master):
+        self.master = master
+        master.title("Simple UI")
 
-def merge_json_files(json1_path, json2_path, merged_output_path):
-    # Read the content of the first JSON file
-    with open(json1_path, 'r') as file:
-        json1_data = json.load(file)
+        self.output_field = tk.Text(master, height=10, width=50)
+        self.output_field.grid(row=0, column=0, padx=10, pady=10)
 
-    # Read the content of the second JSON file
-    with open(json2_path, 'r') as file:
-        json2_data = json.load(file)
+        self.button_convert = tk.Button(master, text="Convert XMI to JSON and More", command=self.convert_and_more)
+        self.button_convert.grid(row=1, column=0, padx=10, pady=10)
 
-    # Merge the content of both JSON files
-    merged_data = {}
-    merged_data['Uncertainty'] = json1_data
-    merged_data['Model'] = json2_data
+        self.button_extract_tasks = tk.Button(master, text="Extract Tasks with Uncertainty", command=self.extract_tasks_with_uncertainty)
+        self.button_extract_tasks.grid(row=2, column=0, padx=10, pady=10)
 
-    # Write the merged content into a new JSON file
-    with open(merged_output_path, 'w') as file:
-        json.dump(merged_data, file, indent=4)
+        self.button_satisfied_design_decisions = tk.Button(master, text="Satisfied Design Decisions", command=self.satisfied_design_decisions)
+        self.button_satisfied_design_decisions.grid(row=3, column=0, padx=10, pady=10)
 
-    print("Merged output saved to:", merged_output_path)
+        self.button_solve_formula = tk.Button(master, text="Solve Formula", command=self.solve_formula)
+        self.button_solve_formula.grid(row=4, column=0, padx=10, pady=10)
 
-    # Delete the original JSON files
-    os.remove(json1_path)
-    os.remove(json2_path)
+        self.button_generate_concretization = tk.Button(master, text="Generate Concretization", command=self.generate_concretization)
+        self.button_generate_concretization.grid(row=5, column=0, padx=10, pady=10)
+
+        self.button_sort_tasks = tk.Button(master, text="Sort by Tasks", command=self.sort_by_tasks)
+        self.button_sort_tasks.grid(row=6, column=0, padx=10, pady=10)
+
+        self.button_select_tasks_decisions = tk.Button(master, text="Select Tasks Design Decisions", command=self.select_tasks_decisions)
+        self.button_select_tasks_decisions.grid(row=7, column=0, padx=10, pady=10)
+
+        # Redirect standard output to a variable
+        self.stdout = sys.stdout
+        sys.stdout = self
+
+    def write(self, text):
+        # Write text to the output field
+        self.output_field.insert(tk.END, text)
+
+
+    def convert_and_more(self):
+        goal_model_file = filedialog.askopenfilename(title="Select Goal Model XMI file", filetypes=[("XMI files", "*.xmi")])
+        if not goal_model_file:
+            self.output_field.insert(tk.END, "No file selected.\n")
+            return
+
+        global output_folder 
+        output_folder= filedialog.askdirectory(title="Select output folder")
+        if not output_folder:
+            self.output_field.insert(tk.END, "No output folder selected.\n")
+            return
+
+        # Convert XMI to JSON
+        xmi_output_file = os.path.join(output_folder, "Goal_Model2.json")
+        try:
+            xmi2json.xmi_2_json(goal_model_file, xmi_output_file)
+            self.output_field.insert(tk.END, "XMI to JSON conversion successful.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error converting XMI to JSON: {str(e)}\n")
+            return
+
+        # Extract Uncertainty Tasks
+        uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
+        try:
+            extract_uncertainty_tasks.Uncertainty_tasks(goal_model_file, uncertain_tasks_output)
+            self.output_field.insert(tk.END, "Uncertainty tasks extraction successful.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error extracting uncertainty tasks: {str(e)}\n")
+            return
+
+        # Merge JSON files
+        merged_output_file = os.path.join(output_folder, "Goal_Model.json")
+        try:
+            merge_json_file.merge_json_files(uncertain_tasks_output, xmi_output_file, merged_output_file)
+            self.output_field.insert(tk.END, "\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error merging JSON files: {str(e)}\n")
+
+    def extract_tasks_with_uncertainty(self):
+
+        merged_output_file = os.path.join(output_folder, "Goal_Model.json")
+        uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
+
+        try:
+            extract_uncertainty_tasks.extract_uncertainty(merged_output_file, uncertain_tasks_output)
+            self.output_field.insert(tk.END, "Tasks with uncertainty extracted successfully.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error extracting tasks with uncertainty: {str(e)}\n")
+
+    def satisfied_design_decisions(self):
+
+        uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
+        merged_output_file = os.path.join(output_folder, "Goal_Model.json")
+        global goal_model_design_decision_output 
+        goal_model_design_decision_output = os.path.join(output_folder, "Goal_Model_Satisfied_Design_Decision.json")
+
+        try:
+            satisfied_design_decisions.find_satisfied_design_decisions(uncertain_tasks_output, merged_output_file, goal_model_design_decision_output)
+            self.output_field.insert(tk.END, "Satisfied design decisions extracted successfully.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error extracting satisfied design decisions: {str(e)}\n")
+
+    def solve_formula(self):
+        global z3_diagram_file 
+        z3_diagram_file = filedialog.askopenfilename(title="Select Z3 Diagram JSON file", filetypes=[("JSON files", "*.json")])
+        if not z3_diagram_file:
+            self.output_field.insert(tk.END, "No file selected.\n")
+            return
+
+        global z3_solutions_output 
+        z3_solutions_output = os.path.join(output_folder, "Concretizations.json")
+
+        try:
+            z3_solver.solve_formula(z3_diagram_file, z3_solutions_output)
+            self.output_field.insert(tk.END, "Formula solved successfully.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error solving formula: {str(e)}\n")
+
+    def generate_concretization(self):
+
+        global output_diagram_solutions_folder 
+        output_diagram_solutions_folder = os.path.join(output_folder, "solution_diagram")
+        if not os.path.exists(output_diagram_solutions_folder):
+            os.makedirs(output_diagram_solutions_folder)
+
+        try:
+            concretization_generation.generate_concretization(z3_diagram_file, z3_solutions_output, z3_diagram_file, output_diagram_solutions_folder)
+            self.output_field.insert(tk.END, "Concretization generated successfully.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error generating concretization: {str(e)}\n")
+
+    def sort_by_tasks(self):
+
+        # Ask user to select mapping CSV file
+        global mapping_csv_file 
+        mapping_csv_file = filedialog.askopenfilename(title="Select Mapping CSV file", filetypes=[("CSV files", "*.csv")])
+        if not mapping_csv_file:
+            self.output_field.insert(tk.END, "No mapping CSV file selected.\n")
+            return
+
+        try:
+            # Call filter.sort_solutions with the selected parameters
+            filter.sort_solutions(z3_solutions_output, mapping_csv_file, output_diagram_solutions_folder)
+            self.output_field.insert(tk.END, "Solutions sorted by tasks successfully.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error sorting solutions: {str(e)}\n")
+
+    def select_tasks_decisions(self):
+        # Create the folder if it doesn't exist
+        global satisfied_design_decisions_folder 
+        satisfied_design_decisions_folder = os.path.join(output_folder, "Selected_Tasks_Solutions")
+        if not os.path.exists(satisfied_design_decisions_folder):
+            os.makedirs(satisfied_design_decisions_folder)
+
+        try:
+            # Call satisfied_design_decisions.print_files_for_folders with the provided parameters
+            satisfied_design_decisions.print_files_for_folders(goal_model_design_decision_output, output_diagram_solutions_folder, satisfied_design_decisions_folder)
+            self.output_field.insert(tk.END, "Tasks Design Decisions selected successfully.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error selecting tasks design decisions: {str(e)}\n")
 
 def main():
     
-    xmi2json.xmi_2_json(Goal_Model,xmi_2_json_output_file)
-    extract_uncertainty_tasks.Uncertainty_tasks(Goal_Model,uncertain_tasks_output)
-    merge_json_files(uncertain_tasks_output,xmi_2_json_output_file,merged_output_file)
-    extract_uncertainty_tasks.extract_uncertainty(merged_output_file,uncertain_tasks_output)
-    satisfied_design_decisions.find_satisfied_design_decisions(uncertain_tasks_output,merged_output_file,Goal_Model_Design_Decision_Output)
-    z3_solver.solve_formula(z3_diagram_file,z3_solutions_output)
-    concretization_generation.generate_concretization(z3_diagram_file,z3_solutions_output,z3_diagram_file,output_diagram_solutions)
-    filter.sort_solutions(z3_solutions_output,mapping_csv,output_diagram_solutions)
-    satisfied_design_decisions.print_files_for_folders(Goal_Model_Design_Decision_Output,output_diagram_solutions,satisfied_design_decisions_folder)
+    root = tk.Tk()
+    app = SimpleUI(root)
+    root.mainloop()
     
 if __name__ == "__main__":
     main()
+
+
+
