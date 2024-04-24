@@ -47,7 +47,6 @@ def print_files_for_folders(json_file_path, folder_path, output_folder):
 
         # Check if the folder exists
         if os.path.exists(folder_path_with_name) and os.path.isdir(folder_path_with_name):
-            print(f"Files in folder '{folder_name}':")
             # List files in the folder
             files = os.listdir(folder_path_with_name)
 
@@ -58,15 +57,9 @@ def print_files_for_folders(json_file_path, folder_path, output_folder):
                 # Update the common_files set to contain only files present in both sets
                 common_files &= set(files)
 
-            for file in files:
-                print(f"- {file}")
-            print()  # Add a newline after listing files for each folder
-        else:
-            print(f"Folder '{folder_name}' does not exist.")
-
     # Print common files present in all folders
     if common_files:
-        print("Common files present in all folders:")
+        print("Common solutions found:")
         for file in common_files:
             print(f"- {file}")
 
@@ -82,6 +75,6 @@ def print_files_for_folders(json_file_path, folder_path, output_folder):
                 src_file_path = os.path.join(folder_path_with_name, file)
                 dst_file_path = os.path.join(output_folder, file)
                 shutil.copy(src_file_path, dst_file_path)
-        print(f"Common files copied to '{output_folder}'.")
+        print(f"Common solutions copied to '{output_folder}'.")
     else:
-        print("No common files found in all folders.")
+        print("No common solutions found.")
