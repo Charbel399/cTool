@@ -17,7 +17,7 @@ class SimpleUI:
         self.master = master
         master.title("cTool")
 
-        self.output_field = tk.Text(master, height=10, width=50)
+        self.output_field = tk.Text(master, height=30, width=100)
         self.output_field.grid(row=0, column=0, padx=10, pady=10)
 
         self.button_convert = tk.Button(master, text="Convert XMI to JSON or select already made Goal Model", command=self.convert_and_more)
@@ -114,7 +114,6 @@ class SimpleUI:
 
         uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
         merged_output_file = os.path.join(output_folder, "Goal_Model.json")
-        global goal_model_design_decision_output 
         goal_model_design_decision_output = os.path.join(output_folder, "Goal_Model_Satisfied_Design_Decision.json")
 
         try:
@@ -169,6 +168,10 @@ class SimpleUI:
             self.output_field.insert(tk.END, f"Error sorting solutions: {str(e)}\n")
 
     def select_tasks_decisions(self):
+        goal_model_design_decision_output = filedialog.askopenfilename(title="Select Design Decisions", filetypes=[("JSON files", "*.json")])
+        if not goal_model_design_decision_output:
+            self.output_field.insert(tk.END, "No file selected.\n")
+            return
         # Create the folder if it doesn't exist
         global satisfied_design_decisions_folder 
         satisfied_design_decisions_folder = os.path.join(output_folder, "Selected_Tasks_Solutions")
