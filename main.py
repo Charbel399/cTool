@@ -10,6 +10,7 @@ import os
 import merge_json_file
 import sys
 import shutil
+import json
 
 
 class SimpleUI:
@@ -40,6 +41,9 @@ class SimpleUI:
 
         self.button_select_tasks_decisions = tk.Button(master, text="Select Tasks Design Decisions", command=self.select_tasks_decisions)
         self.button_select_tasks_decisions.grid(row=7, column=0, padx=10, pady=10)
+
+        self.button_multiple_stakeholders_decision = tk.Button(master, text="Multiple Stakeholders Decision", command=self.multiple_stakeholders_decision)
+        self.button_multiple_stakeholders_decision.grid(row=8, column=0, padx=10, pady=10)
 
         # Redirect standard output to a variable
         self.stdout = sys.stdout
@@ -182,6 +186,20 @@ class SimpleUI:
             self.output_field.insert(tk.END, "Tasks Design Decisions selected successfully.\n")
         except Exception as e:
             self.output_field.insert(tk.END, f"Error selecting tasks design decisions: {str(e)}\n")
+        
+    def multiple_stakeholders_decision(self):
+        # Ask user to select JSON files
+        json_file_paths = filedialog.askopenfilenames(title="Select JSON Files",filetypes=[("JSON files", "*.json")])
+        if not json_file_paths:
+            self.output_field.insert(tk.END, "No file selected.\n")
+            return
+        try:
+            # Call the function to perform the desired operation
+            satisfied_design_decisions.multiple_stakeholders_decision(json_file_paths, output_diagram_solutions_folder, output_folder)
+        except Exception as e:
+             self.output_field.insert(tk.END, f"Error generating multiple stakeholders design decisions: {str(e)}\n")
+        
+
 
 def main():
     
