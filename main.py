@@ -9,17 +9,18 @@ import filter
 import os 
 import merge_json_file
 import sys
+import shutil
 
 
 class SimpleUI:
     def __init__(self, master):
         self.master = master
-        master.title("Simple UI")
+        master.title("cTool")
 
         self.output_field = tk.Text(master, height=10, width=50)
         self.output_field.grid(row=0, column=0, padx=10, pady=10)
 
-        self.button_convert = tk.Button(master, text="Convert XMI to JSON and More", command=self.convert_and_more)
+        self.button_convert = tk.Button(master, text="Convert XMI to JSON or select already made Goal Model", command=self.convert_and_more)
         self.button_convert.grid(row=1, column=0, padx=10, pady=10)
 
         self.button_extract_tasks = tk.Button(master, text="Extract Tasks with Uncertainty", command=self.extract_tasks_with_uncertainty)
@@ -50,42 +51,53 @@ class SimpleUI:
 
 
     def convert_and_more(self):
-        goal_model_file = filedialog.askopenfilename(title="Select Goal Model XMI file", filetypes=[("XMI files", "*.xmi")])
-        if not goal_model_file:
-            self.output_field.insert(tk.END, "No file selected.\n")
-            return
 
+        
+        goal_model_file = filedialog.askopenfilename(title="Select Goal Model File", filetypes=[("XMI files", "*.xmi"), ("JSON files", "*.json")])
         global output_folder 
         output_folder= filedialog.askdirectory(title="Select output folder")
         if not output_folder:
             self.output_field.insert(tk.END, "No output folder selected.\n")
             return
 
-        # Convert XMI to JSON
-        xmi_output_file = os.path.join(output_folder, "Goal_Model2.json")
-        try:
-            xmi2json.xmi_2_json(goal_model_file, xmi_output_file)
-            self.output_field.insert(tk.END, "XMI to JSON conversion successful.\n")
-        except Exception as e:
-            self.output_field.insert(tk.END, f"Error converting XMI to JSON: {str(e)}\n")
-            return
+        if goal_model_file.lower().endswith('.xmi'):
+            if not goal_model_file:
+                self.output_field.insert(tk.END, "No file selected.\n")
+                return
+            
+            # Convert XMI to JSON
+            xmi_output_file = os.path.join(output_folder, "Goal_Model2.json")
+            try:
+                xmi2json.xmi_2_json(goal_model_file, xmi_output_file)
+                self.output_field.insert(tk.END, "XMI to JSON conversion successful.\n")
+            except Exception as e:
+                self.output_field.insert(tk.END, f"Error converting XMI to JSON: {str(e)}\n")
+                return
 
-        # Extract Uncertainty Tasks
-        uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
-        try:
-            extract_uncertainty_tasks.Uncertainty_tasks(goal_model_file, uncertain_tasks_output)
-            self.output_field.insert(tk.END, "Uncertainty tasks extraction successful.\n")
-        except Exception as e:
-            self.output_field.insert(tk.END, f"Error extracting uncertainty tasks: {str(e)}\n")
-            return
+            # Extract Uncertainty Tasks
+            uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
+            try:
+                extract_uncertainty_tasks.Uncertainty_tasks(goal_model_file, uncertain_tasks_output)
+                self.output_field.insert(tk.END, "Uncertainty tasks extraction successful.\n")
+            except Exception as e:
+                self.output_field.insert(tk.END, f"Error extracting uncertainty tasks: {str(e)}\n")
+                return
 
-        # Merge JSON files
-        merged_output_file = os.path.join(output_folder, "Goal_Model.json")
-        try:
-            merge_json_file.merge_json_files(uncertain_tasks_output, xmi_output_file, merged_output_file)
-            self.output_field.insert(tk.END, "\n")
-        except Exception as e:
-            self.output_field.insert(tk.END, f"Error merging JSON files: {str(e)}\n")
+            # Merge JSON files
+            merged_output_file = os.path.join(output_folder, "Goal_Model.json")
+            try:
+                merge_json_file.merge_json_files(uncertain_tasks_output, xmi_output_file, merged_output_file)
+                self.output_field.insert(tk.END, "\n")
+            except Exception as e:
+                self.output_field.insert(tk.END, f"Error merging JSON files: {str(e)}\n")
+        elif goal_model_file.lower().endswith('.json'):
+            # Just copy the JSON file to output folder with desired name
+            try:
+                shutil.copy2(goal_model_file, os.path.join(output_folder, "Goal_Model.json"))
+                self.output_field.insert(tk.END, "JSON file copied successfully.\n")
+            except Exception as e:
+                self.output_field.insert(tk.END, f"Error copying JSON file: {str(e)}\n")
+                return
 
     def extract_tasks_with_uncertainty(self):
 
