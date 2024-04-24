@@ -69,7 +69,6 @@ class SimpleUI:
             xmi_output_file = os.path.join(output_folder, "Goal_Model2.json")
             try:
                 xmi2json.xmi_2_json(goal_model_file, xmi_output_file)
-                self.output_field.insert(tk.END, "XMI to JSON conversion successful.\n")
             except Exception as e:
                 self.output_field.insert(tk.END, f"Error converting XMI to JSON: {str(e)}\n")
                 return
@@ -78,7 +77,6 @@ class SimpleUI:
             uncertain_tasks_output = os.path.join(output_folder, "uncertain_tasks.json")
             try:
                 extract_uncertainty_tasks.Uncertainty_tasks(goal_model_file, uncertain_tasks_output)
-                self.output_field.insert(tk.END, "Uncertainty tasks extraction successful.\n")
             except Exception as e:
                 self.output_field.insert(tk.END, f"Error extracting uncertainty tasks: {str(e)}\n")
                 return
@@ -96,7 +94,7 @@ class SimpleUI:
                 shutil.copy2(goal_model_file, os.path.join(output_folder, "Goal_Model.json"))
                 self.output_field.insert(tk.END, "JSON file copied successfully.\n")
             except Exception as e:
-                self.output_field.insert(tk.END, f"Error copying JSON file: {str(e)}\n")
+                self.output_field.insert(tk.END, f"{str(e)}\n")
                 return
 
     def extract_tasks_with_uncertainty(self):
