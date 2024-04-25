@@ -18,32 +18,42 @@ class SimpleUI:
         self.master = master
         master.title("cTool")
 
-        self.output_field = tk.Text(master, height=30, width=100)
-        self.output_field.grid(row=0, column=0, padx=10, pady=10)
+        # Text field on the left
+        self.output_field = tk.Text(master, height=30, width=50)  # Reduced width
+        self.output_field.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
-        self.button_convert = tk.Button(master, text="Convert XMI to JSON or select already made Goal Model", command=self.convert_and_more)
-        self.button_convert.grid(row=1, column=0, padx=10, pady=10)
+        # Frame to contain buttons on the right
+        self.button_frame = tk.Frame(master)
+        self.button_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
-        self.button_extract_tasks = tk.Button(master, text="Extract Tasks with Uncertainty", command=self.extract_tasks_with_uncertainty)
-        self.button_extract_tasks.grid(row=2, column=0, padx=10, pady=10)
+        # Buttons in the button frame
+        self.button_convert = tk.Button(self.button_frame, text="Load Goal Model File", command=self.convert_and_more)
+        self.button_convert.pack(fill="x", padx=10, pady=5)
 
-        self.button_satisfied_design_decisions = tk.Button(master, text="Satisfied Design Decisions", command=self.satisfied_design_decisions)
-        self.button_satisfied_design_decisions.grid(row=3, column=0, padx=10, pady=10)
+        self.button_extract_tasks = tk.Button(self.button_frame, text="Extract Tasks with Uncertainty", command=self.extract_tasks_with_uncertainty)
+        self.button_extract_tasks.pack(fill="x", padx=10, pady=5)
 
-        self.button_solve_formula = tk.Button(master, text="Solve Formula", command=self.solve_formula)
-        self.button_solve_formula.grid(row=4, column=0, padx=10, pady=10)
+        self.button_satisfied_design_decisions = tk.Button(self.button_frame, text="Satisfied Design Decisions", command=self.satisfied_design_decisions)
+        self.button_satisfied_design_decisions.pack(fill="x", padx=10, pady=5)
 
-        self.button_generate_concretization = tk.Button(master, text="Generate Concretization", command=self.generate_concretization)
-        self.button_generate_concretization.grid(row=5, column=0, padx=10, pady=10)
+        self.button_solve_formula = tk.Button(self.button_frame, text="Solve Formula", command=self.solve_formula)
+        self.button_solve_formula.pack(fill="x", padx=10, pady=5)
 
-        self.button_sort_tasks = tk.Button(master, text="Sort by Tasks", command=self.sort_by_tasks)
-        self.button_sort_tasks.grid(row=6, column=0, padx=10, pady=10)
+        self.button_generate_concretization = tk.Button(self.button_frame, text="Generate Concretization", command=self.generate_concretization)
+        self.button_generate_concretization.pack(fill="x", padx=10, pady=5)
 
-        self.button_select_tasks_decisions = tk.Button(master, text="Select Tasks Design Decisions", command=self.select_tasks_decisions)
-        self.button_select_tasks_decisions.grid(row=7, column=0, padx=10, pady=10)
+        self.button_sort_tasks = tk.Button(self.button_frame, text="Sort by Tasks", command=self.sort_by_tasks)
+        self.button_sort_tasks.pack(fill="x", padx=10, pady=5)
 
-        self.button_multiple_stakeholders_decision = tk.Button(master, text="Multiple Stakeholders Decision", command=self.multiple_stakeholders_decision)
-        self.button_multiple_stakeholders_decision.grid(row=8, column=0, padx=10, pady=10)
+        self.button_select_tasks_decisions = tk.Button(self.button_frame, text="Select Tasks Design Decisions", command=self.select_tasks_decisions)
+        self.button_select_tasks_decisions.pack(fill="x", padx=10, pady=5)
+
+        self.button_multiple_stakeholders_decision = tk.Button(self.button_frame, text="Multiple Stakeholders Decision", command=self.multiple_stakeholders_decision)
+        self.button_multiple_stakeholders_decision.pack(fill="x", padx=10, pady=5)
+
+        # Configure grid weights to make text field expandable
+        master.grid_rowconfigure(0, weight=1)
+        master.grid_columnconfigure(0, weight=1)
 
         # Redirect standard output to a variable
         self.stdout = sys.stdout
