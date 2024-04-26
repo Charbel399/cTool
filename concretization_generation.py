@@ -58,4 +58,4 @@ def generate_concretization(initial_state_file, solutions_file, may_elements, ou
         with open(os.path.join(output_dir, f'{solution}.json'), 'w') as f:
             json.dump(updated_state_data, f, indent=2)
 
-    print(f"JSON files have been written to the '{output_dir}' directory.")
+    print(f"Concretization files have been generated and can be found at '{output_dir}'")
