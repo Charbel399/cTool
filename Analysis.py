@@ -84,7 +84,12 @@ def analyze_stakeholder(stakeholder, solution, design_decision, output_filename)
         if other_stakeholder != stakeholder:
             other_solutions = solutions["Stakeholder Design Solutions"][other_stakeholder]
             differing_solutions = list(set(stakeholder_solutions) ^ set(other_solutions))
-            content.append(f"<b>Solutions that differ between {stakeholder} and {other_stakeholder}:</b><br/>{differing_solutions}<br/><br/>")
+            common_solutions = list(set(stakeholder_solutions) & set(other_solutions))
+            content.append(f"<b>Solutions in common between {stakeholder} and {other_stakeholder}:</b><br/>{common_solutions}<br/><br/>")
+            if differing_solutions:
+                content.append(f"<b>Solutions that differ between {stakeholder} and {other_stakeholder}:</b><br/>{differing_solutions}<br/><br/>")
+            else:
+                content.append(f"<b> {stakeholder} and {other_stakeholder} have the same solutions</b><br/>")
 
             other_decisions = design_decisions[other_stakeholder]["Satisfied_Design_Decisions"]
             differing_decisions = list(set(decisions) ^ set(other_decisions))
@@ -92,7 +97,10 @@ def analyze_stakeholder(stakeholder, solution, design_decision, output_filename)
 
             conflicting_solutions = list(set(stakeholder_solutions) & set(other_solutions))
             for solution in conflicting_solutions:
-                content.append(f"<b>Solution {differing_solutions} is a conflict between {stakeholder} and {other_stakeholder}.</b><br/>")
-                content.append(f"<b>Decisions causing the conflict:</b><br/>{differing_decisions}<br/><br/>")
+                if differing_solutions:
+                    content.append(f"<b>Solution {differing_solutions} is a conflict between {stakeholder} and {other_stakeholder}.</b><br/>")
+                    content.append(f"<b>Decisions causing the conflict:</b><br/>{differing_decisions}<br/><br/>")
+                else:
+                    content.append(f"<b>There are no conflicts between {stakeholder} and {other_stakeholder}.</b><br/>")
 
     generate_pdf("\n".join(content), output_filename + "/report.pdf")
