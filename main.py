@@ -33,11 +33,11 @@ class SimpleUI:
 
         # Text field on the left
         self.output_field = tk.Text(master, height=30, width=50)  # Reduced width
-        self.output_field.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        self.output_field.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
         # Frame to contain buttons on the right
         self.button_frame = tk.Frame(master)
-        self.button_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        self.button_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
         # Help Menu
         self.menu_bar = tk.Menu(master)
