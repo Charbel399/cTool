@@ -92,7 +92,7 @@ def analyze_stakeholder(stakeholder, solution, design_decision, output_filename)
 
             conflicting_solutions = list(set(stakeholder_solutions) & set(other_solutions))
             for solution in conflicting_solutions:
-                content.append(f"<b>Solution {solution} is a conflict between {stakeholder} and {other_stakeholder}.</b><br/>")
-                content.append(f"<b>Decisions causing the conflict:</b><br/>{decisions}<br/><br/>")
+                content.append(f"<b>Solution {differing_solutions} is a conflict between {stakeholder} and {other_stakeholder}.</b><br/>")
+                content.append(f"<b>Decisions causing the conflict:</b><br/>{differing_decisions}<br/><br/>")
 
     generate_pdf("\n".join(content), output_filename + "/report.pdf")
