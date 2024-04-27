@@ -11,8 +11,6 @@ import os
 import merge_json_file
 import sys
 import shutil
-from PIL import Image, ImageDraw
-import json
 
 def copy_files(source_folder, destination_folder):
     # Create destination folder if it doesn't exist
@@ -228,7 +226,7 @@ class SimpleUI:
 
         try:
             # Call satisfied_design_decisions.print_files_for_folders with the provided parameters
-            satisfied_design_decisions.print_files_for_folders(goal_model_design_decision_output, output_diagram_solutions_folder, satisfied_design_decisions_folder)
+            satisfied_design_decisions.print_files_for_folders(goal_model_design_decision_output, output_diagram_solutions_folder + "\decision_sorted_concretizations", satisfied_design_decisions_folder)
             self.output_field.insert(tk.END, "Tasks Design Decisions selected successfully.\n")
         except Exception as e:
             self.output_field.insert(tk.END, f"Error selecting tasks design decisions: {str(e)}\n")
@@ -241,7 +239,7 @@ class SimpleUI:
             return
         try:
             # Call the function to perform the desired operation
-            satisfied_design_decisions.multiple_stakeholders_decision(json_file_paths, output_diagram_solutions_folder, output_folder)
+            satisfied_design_decisions.multiple_stakeholders_decision(json_file_paths, output_diagram_solutions_folder + "\decision_sorted_concretizations", output_folder)
         except Exception as e:
              self.output_field.insert(tk.END, f"Error generating multiple stakeholders design decisions: {str(e)}\n")
         
