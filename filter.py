@@ -14,8 +14,10 @@ def sort_solutions(json_file_path, mapping_csv_path, output_folder):
         csv_reader = csv.reader(csv_file)
         next(csv_reader)  # Skip header
         for row in csv_reader:
-            decision, may_element1, may_element2, value = row
-            mapping[decision] = (may_element1, may_element2, value == 'True')
+            decision, may_element, value = row
+            if decision not in mapping:
+                mapping[decision] = []
+            mapping[decision].append((may_element, value == 'True'))
 
     # Create folders if they don't exist
     for decision in mapping.keys():
@@ -26,8 +28,9 @@ def sort_solutions(json_file_path, mapping_csv_path, output_folder):
     
     # Copy solutions into folders
     for solution_name, solution_data in solutions_data.items():
-        for decision, (may_element1, may_element2, value) in mapping.items():
-            if solution_data.get(may_element1) == str(value) or solution_data.get(may_element2) == str(value):
+        for decision, conditions in mapping.items():
+            all_conditions_met = all(solution_data.get(may_element) == str(value) for may_element, value in conditions)
+            if all_conditions_met:
                 folder_name = decision.replace('/', '_')  # Replace forward slashes with underscores
                 destination_folder = os.path.join(output_folder, folder_name)
                 source_file = os.path.join(output_folder, f"{solution_name}.json")

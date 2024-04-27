@@ -31,7 +31,7 @@ def solve_formula(input_file, output_file):
     while s.check() == sat:
         model = s.model()
         solution = {str(v): str(model[v]) for v in model}
-        solutions[f'Solution{i}'] = solution
+        solutions[f'Concretization {i}'] = solution
         i += 1
         
         # Add a constraint to exclude the current solution

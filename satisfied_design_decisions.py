@@ -120,7 +120,7 @@ def multiple_stakeholders_decision(json_file_paths, folder_path, output_folder):
         i += 1
 
     # Write output data to JSON file (optional)
-    output_file_path = os.path.join(output_folder, "Multiple_Stakeholder_Decisions.json")
+    output_file_path = os.path.join(output_folder, "Stakeholders_report.json")
     with open(output_file_path, "w") as output_file:
         json.dump(output_data, output_file, indent=4)
     print(f"Multiple stakeholders design decisions successfully generated and can be found at '{output_file_path}'")
