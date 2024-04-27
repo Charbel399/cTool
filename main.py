@@ -11,6 +11,7 @@ import os
 import merge_json_file
 import sys
 import shutil
+import Analysis
 
 def copy_files(source_folder, destination_folder):
     # Create destination folder if it doesn't exist
@@ -47,33 +48,36 @@ class SimpleUI:
         master.config(menu=self.menu_bar)
 
         # Buttons in the button frame
-        self.button_convert = tk.Button(self.button_frame, text="Import Goal Model", command=self.convert_and_more, compound=tk.LEFT)
+        self.button_convert = tk.Button(self.button_frame, text="1. Import Goal Model", command=self.convert_and_more, compound=tk.LEFT)
         self.button_convert.pack(fill="x", padx=10, pady=5)
         self.button_convert.bind("<Button-3>", lambda event: self.show_help("This button is used to import the goal model it can be an already made goal model or a jucmnav xmi file. If it's the xmi file it will then be converted to json"))
 
-        self.button_extract_tasks = tk.Button(self.button_frame, text="Extract Tasks With Uncertainty", command=self.extract_tasks_with_uncertainty, compound=tk.LEFT)
+        self.button_extract_tasks = tk.Button(self.button_frame, text="2. Extract Tasks With Uncertainty", command=self.extract_tasks_with_uncertainty, compound=tk.LEFT)
         self.button_extract_tasks.pack(fill="x", padx=10, pady=5)
         self.button_extract_tasks.bind("<Button-3>", lambda event: self.show_help("Also known as design decisions, this button is used to extract the tasks with uncertainty from the goal model. The tasks with uncertainty are defined by having beliefs attached to them in the goal model."))
 
-        self.button_satisfied_design_decisions = tk.Button(self.button_frame, text="Detect Imported Decisions Scenario", command=self.satisfied_design_decisions, compound=tk.LEFT)
+        self.button_satisfied_design_decisions = tk.Button(self.button_frame, text="3. Detect Imported Decisions Scenario", command=self.satisfied_design_decisions, compound=tk.LEFT)
         self.button_satisfied_design_decisions.pack(fill="x", padx=10, pady=5)
         self.button_satisfied_design_decisions.bind("<Button-3>", lambda event: self.show_help("This button helps extracting design decisions that are satisfied according to the goal model"))
 
-        self.button_solve_formula = tk.Button(self.button_frame, text="Import Partial Design Model", command=self.solve_formula, compound=tk.LEFT)
+        self.button_solve_formula = tk.Button(self.button_frame, text="4. Import Partial Design Model", command=self.solve_formula, compound=tk.LEFT)
         self.button_solve_formula.pack(fill="x", padx=10, pady=5)
         self.button_solve_formula.bind("<Button-3>", lambda event: self.show_help("This button is used to import the initial partial model where all may elements are set to false it also imports the may formula from the same file as well as the may elements and their addition to the partial model"))
 
-        self.button_generate_concretization = tk.Button(self.button_frame, text="Generate all concretizations", command=self.generate_concretization, compound=tk.LEFT)
+        self.button_generate_concretization = tk.Button(self.button_frame, text="5.Generate all concretizations", command=self.generate_concretization, compound=tk.LEFT)
         self.button_generate_concretization.pack(fill="x", padx=10, pady=5)
         self.button_generate_concretization.bind("<Button-3>", lambda event: self.show_help("This button generates all concretizations of the partial model based on the may formula and the may elements."))
 
-        self.button_sort_tasks = tk.Button(self.button_frame, text="Sort concretizations by design decisions", command=self.sort_by_tasks, compound=tk.LEFT)
+        self.button_sort_tasks = tk.Button(self.button_frame, text="6. Sort concretizations by design decisions", command=self.sort_by_tasks, compound=tk.LEFT)
         self.button_sort_tasks.pack(fill="x", padx=10, pady=5)
         self.button_sort_tasks.bind("<Button-3>", lambda event: self.show_help("This button sorts each solution by design decisions based on the mapping of the may elements to design decisions provided by the user."))
 
-        self.button_multiple_stakeholders_decision = tk.Button(self.button_frame, text="Import Decision Scenarios", command=self.multiple_stakeholders_decision, compound=tk.LEFT)
+        self.button_multiple_stakeholders_decision = tk.Button(self.button_frame, text="7. Import Decision Scenarios", command=self.multiple_stakeholders_decision, compound=tk.LEFT)
         self.button_multiple_stakeholders_decision.pack(fill="x", padx=10, pady=5)
         self.button_multiple_stakeholders_decision.bind("<Button-3>", lambda event: self.show_help("This button generate the concretization that satisfies the design decisions selected by the user. Select 1 file for a single stakeholder or select multiple files for multiples stakeholders!"))
+
+        self.button_analysis = tk.Button(self.button_frame, text="8. Analyse", command=self.Analysis_of_files, compound=tk.LEFT)
+        self.button_analysis.pack(fill="x", padx=10, pady=5)
 
         # Configure grid weights to make text field expandable
         master.grid_rowconfigure(0, weight=1)
@@ -233,16 +237,28 @@ class SimpleUI:
         
     def multiple_stakeholders_decision(self):
         # Ask user to select JSON files
-        json_file_paths = filedialog.askopenfilenames(title="Select JSON Files",filetypes=[("JSON files", "*.json")])
-        if not json_file_paths:
+        global json_file_paths1 
+        json_file_paths1 = filedialog.askopenfilenames(title="Select JSON Files",filetypes=[("JSON files", "*.json")])
+        if not json_file_paths1:
             self.output_field.insert(tk.END, "No file selected.\n")
             return
         try:
             # Call the function to perform the desired operation
-            satisfied_design_decisions.multiple_stakeholders_decision(json_file_paths, output_diagram_solutions_folder + "\decision_sorted_concretizations", output_folder)
+            satisfied_design_decisions.multiple_stakeholders_decision(json_file_paths1, output_diagram_solutions_folder + "\decision_sorted_concretizations", output_folder)
         except Exception as e:
              self.output_field.insert(tk.END, f"Error generating multiple stakeholders design decisions: {str(e)}\n")
         
+    def Analysis_of_files(self):
+
+        try:
+            Analysis.merge_json_files(json_file_paths1, output_folder + "/Analysis/Stakeholder_Choices.json")
+            print(output_folder)
+            Analysis.analyze_stakeholder("Stakeholder1", output_folder + "/Stakeholders_report.json", output_folder + "/Analysis/Stakeholder_Choices.json", output_folder + "/Analysis")
+            
+            self.output_field.insert(tk.END, "Analysis Generated.\n")
+        except Exception as e:
+            self.output_field.insert(tk.END, f"Error generating Analysis: {str(e)}\n")
+
 
 
 def main():
