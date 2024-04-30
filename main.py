@@ -251,10 +251,10 @@ class SimpleUI:
     def Analysis_of_files(self):
 
         try:
-            Analysis.merge_json_files(json_file_paths1, output_folder + "/Analysis/Stakeholder_Choices.json")
+            Analysis.merge_json_files(json_file_paths1, output_folder + "/Stakeholder_Choices.json")
             print(output_folder)
-            Analysis.analyze_stakeholder("Stakeholder1", output_folder + "/Stakeholders_report.json", output_folder + "/Analysis/Stakeholder_Choices.json", output_folder + "/Analysis")
-            
+            Analysis.analyze_stakeholder("Stakeholder1", output_folder + "/Stakeholders_report.json", output_folder + "/Stakeholder_Choices.json", output_folder)
+            os.remove(output_folder + "/Stakeholder_Choices.json")
             self.output_field.insert(tk.END, "Analysis Generated.\n")
         except Exception as e:
             self.output_field.insert(tk.END, f"Error generating Analysis: {str(e)}\n")
