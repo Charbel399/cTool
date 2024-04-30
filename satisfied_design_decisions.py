@@ -113,7 +113,7 @@ def multiple_stakeholders_decision(json_file_paths, folder_path, output_folder):
         if common_files:
             # Remove ".json" extension from file names
             common_files = [os.path.splitext(file)[0] for file in common_files]
-            output_data["Stakeholder Design Solutions"][f"Stakeholder {i}"] = common_files
+            output_data["Stakeholder Design Solutions"][f"Stakeholder{i}"] = common_files
         else:
             output_data["Stakeholder Design Solutions"][f"No common solutions found for {json_file_path}"] = []
 
