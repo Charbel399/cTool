@@ -1,0 +1,449 @@
+{
+    "Uncertainty": {
+        "Uncertain_Tasks": [
+            {
+                "Uncertain Task": "Define Leeching Mode Behavior (DFLMB)",
+                "Design Decisions": [
+                    "D3.3. Compromise (C)",
+                    "D3.2. Selfish (S)",
+                    "D3.1. Benevolent (B)"
+                ]
+            },
+            {
+                "Uncertain Task": "Enable Mode Transitions (EMT)",
+                "Design Decisions": [
+                    "Without seeding (WNS)",
+                    "With Seeding (WS)"
+                ]
+            },
+            {
+                "Uncertain Task": "Implement Download Initiation (IDI)",
+                "Design Decisions": [
+                    "Downloads w/o restart (DNR)",
+                    "Downloads with restart (DCR)"
+                ]
+            }
+        ]
+    },
+    "Model": {
+        "Goal_Model": {
+            "Goal": [
+                {
+                    "name": "Download Files",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Share my files",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Be able to recuperate from network errors",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Trust file integrity",
+                    "type": "Goal",
+                    "value": "WeaklySatisfied"
+                },
+                {
+                    "name": "Develop the system (DTS)",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Develop Mode Management System (DMMS)",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Develop Sharing Policies (DSP)",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Enable User Interaction Features (EUIF)",
+                    "type": "Goal",
+                    "value": "Satisfied"
+                }
+            ],
+            "Softgoal": [
+                {
+                    "name": "Reduce network load",
+                    "type": "Softgoal",
+                    "value": "WeaklyDenied"
+                },
+                {
+                    "name": "Improve availability of files",
+                    "type": "Softgoal",
+                    "value": "WeaklySatisfied"
+                },
+                {
+                    "name": "Community Engagement and Interaction",
+                    "type": "Softgoal",
+                    "value": "WeaklySatisfied"
+                },
+                {
+                    "name": "User Experience Enhancement",
+                    "type": "Softgoal",
+                    "value": "WeaklySatisfied"
+                },
+                {
+                    "name": "Privacy",
+                    "type": "Softgoal",
+                    "value": "WeaklySatisfied"
+                }
+            ],
+            "Task": [
+                {
+                    "name": "Implement Mode Switching (IMS)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Define Leeching Mode Behavior (DFLMB)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Define Seeding Mode Behavior (DSMB)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Define Idle Mode Behavior (DIMB)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Enable Mode Transitions (EMT)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Implement Cancelation Mechanism (ICM)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Implement Download Initiation (IDI)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Initiate download process",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Check user reviews and ratings for files and sources.",
+                    "type": "Task",
+                    "value": "WeaklySatisfied"
+                },
+                {
+                    "name": "Verify the credibility of sources providing downloadable files.",
+                    "type": "Task",
+                    "value": "WeaklySatisfied"
+                },
+                {
+                    "name": "Seek assistance or troubleshooting resources to resolve persistent network issues.",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Activate sharing policy",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "Downloads w/o restart (DNR)",
+                    "type": "Task",
+                    "value": "Not Satisfied"
+                },
+                {
+                    "name": "Downloads with restart (DCR)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "D3.3. Compromise (C)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                },
+                {
+                    "name": "D3.2. Selfish (S)",
+                    "type": "Task",
+                    "value": "Not Satisfied"
+                },
+                {
+                    "name": "D3.1. Benevolent (B)",
+                    "type": "Task",
+                    "value": "Not Satisfied"
+                },
+                {
+                    "name": "Without seeding (WNS)",
+                    "type": "Task",
+                    "value": "Not Satisfied"
+                },
+                {
+                    "name": "With Seeding (WS)",
+                    "type": "Task",
+                    "value": "Satisfied"
+                }
+            ],
+            "Ressource": [
+                {
+                    "name": "Sharing Policy",
+                    "type": "Ressource",
+                    "value": "Satisfied"
+                }
+            ]
+        },
+        "links": {
+            "Decomposition": [
+                {
+                    "source": "Develop Mode Management System (DMMS)",
+                    "destination": "Develop the system (DTS)"
+                },
+                {
+                    "source": "Develop Sharing Policies (DSP)",
+                    "destination": "Develop the system (DTS)"
+                },
+                {
+                    "source": "Enable User Interaction Features (EUIF)",
+                    "destination": "Develop the system (DTS)"
+                },
+                {
+                    "source": "Implement Mode Switching (IMS)",
+                    "destination": "Develop Mode Management System (DMMS)"
+                },
+                {
+                    "source": "Enable Mode Transitions (EMT)",
+                    "destination": "Develop Mode Management System (DMMS)"
+                },
+                {
+                    "source": "Implement Download Initiation (IDI)",
+                    "destination": "Enable User Interaction Features (EUIF)"
+                },
+                {
+                    "source": "Implement Cancelation Mechanism (ICM)",
+                    "destination": "Enable User Interaction Features (EUIF)"
+                },
+                {
+                    "source": "Downloads w/o restart (DNR)",
+                    "destination": "Implement Download Initiation (IDI)"
+                },
+                {
+                    "source": "Downloads with restart (DCR)",
+                    "destination": "Implement Download Initiation (IDI)"
+                },
+                {
+                    "source": "D3.3. Compromise (C)",
+                    "destination": "Define Leeching Mode Behavior (DFLMB)"
+                },
+                {
+                    "source": "D3.2. Selfish (S)",
+                    "destination": "Define Leeching Mode Behavior (DFLMB)"
+                },
+                {
+                    "source": "D3.1. Benevolent (B)",
+                    "destination": "Define Leeching Mode Behavior (DFLMB)"
+                },
+                {
+                    "source": "Without seeding (WNS)",
+                    "destination": "Enable Mode Transitions (EMT)"
+                },
+                {
+                    "source": "With Seeding (WS)",
+                    "destination": "Enable Mode Transitions (EMT)"
+                },
+                {
+                    "source": "Define Leeching Mode Behavior (DFLMB)",
+                    "destination": "Develop Sharing Policies (DSP)"
+                },
+                {
+                    "source": "Define Seeding Mode Behavior (DSMB)",
+                    "destination": "Develop Sharing Policies (DSP)"
+                },
+                {
+                    "source": "Define Idle Mode Behavior (DIMB)",
+                    "destination": "Develop Sharing Policies (DSP)"
+                },
+                {
+                    "source": "Check user reviews and ratings for files and sources.",
+                    "destination": "Trust file integrity"
+                },
+                {
+                    "source": "Verify the credibility of sources providing downloadable files.",
+                    "destination": "Trust file integrity"
+                },
+                {
+                    "source": "Initiate download process",
+                    "destination": "Download Files"
+                },
+                {
+                    "source": "Activate sharing policy",
+                    "destination": "Share my files"
+                },
+                {
+                    "source": "Seek assistance or troubleshooting resources to resolve persistent network issues.",
+                    "destination": "Be able to recuperate from network errors"
+                }
+            ],
+            "Contribution": [
+                {
+                    "source": "Seek assistance or troubleshooting resources to resolve persistent network issues.",
+                    "destination": "Community Engagement and Interaction",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "Check user reviews and ratings for files and sources.",
+                    "destination": "Community Engagement and Interaction",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "Trust file integrity",
+                    "destination": "User Experience Enhancement",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "Download Files",
+                    "destination": "User Experience Enhancement",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "Share my files",
+                    "destination": "User Experience Enhancement",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "Define Seeding Mode Behavior (DSMB)",
+                    "destination": "Privacy",
+                    "contribution value": "-25"
+                },
+                {
+                    "source": "Community Engagement and Interaction",
+                    "destination": "Privacy",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "Share my files",
+                    "destination": "Privacy",
+                    "contribution value": "-25"
+                },
+                {
+                    "source": "Develop Sharing Policies (DSP)",
+                    "destination": "Activate sharing policy",
+                    "contribution value": "100"
+                },
+                {
+                    "source": "Implement Download Initiation (IDI)",
+                    "destination": "Develop the system (DTS)",
+                    "contribution value": "75"
+                },
+                {
+                    "source": "Verify the credibility of sources providing downloadable files.",
+                    "destination": "Community Engagement and Interaction",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "D3.1. Benevolent (B)",
+                    "destination": "Privacy",
+                    "contribution value": "-50"
+                },
+                {
+                    "source": "D3.2. Selfish (S)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "-75"
+                },
+                {
+                    "source": "Downloads w/o restart (DNR)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "-25"
+                },
+                {
+                    "source": "Downloads with restart (DCR)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "D3.3. Compromise (C)",
+                    "destination": "Reduce network load",
+                    "contribution value": "25"
+                },
+                {
+                    "source": "D3.3. Compromise (C)",
+                    "destination": "Privacy",
+                    "contribution value": "75"
+                },
+                {
+                    "source": "D3.3. Compromise (C)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "-25"
+                },
+                {
+                    "source": "D3.2. Selfish (S)",
+                    "destination": "Privacy",
+                    "contribution value": "100"
+                },
+                {
+                    "source": "Without seeding (WNS)",
+                    "destination": "Reduce network load",
+                    "contribution value": "75"
+                },
+                {
+                    "source": "Without seeding (WNS)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "-75"
+                },
+                {
+                    "source": "With Seeding (WS)",
+                    "destination": "Reduce network load",
+                    "contribution value": "-75"
+                },
+                {
+                    "source": "With Seeding (WS)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "75"
+                },
+                {
+                    "source": "D3.1. Benevolent (B)",
+                    "destination": "Improve availability of files",
+                    "contribution value": "100"
+                },
+                {
+                    "source": "D3.1. Benevolent (B)",
+                    "destination": "Reduce network load",
+                    "contribution value": "-50"
+                },
+                {
+                    "source": "D3.2. Selfish (S)",
+                    "destination": "Reduce network load",
+                    "contribution value": "50"
+                }
+            ],
+            "Dependency": [
+                {
+                    "source": "Sharing Policy",
+                    "destination": "Activate sharing policy"
+                }
+            ],
+            "BeliefLink": [
+                {
+                    "source": "D2: Can downloads be restarted?",
+                    "destination": "Implement Download Initiation (IDI)"
+                },
+                {
+                    "source": "D3: What policy is followed when leeching ends?",
+                    "destination": "Define Leeching Mode Behavior (DFLMB)"
+                },
+                {
+                    "source": "D1: Can users initiate seeding?",
+                    "destination": "Enable Mode Transitions (EMT)"
+                }
+            ]
+        }
+    }
+}

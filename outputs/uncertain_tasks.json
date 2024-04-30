@@ -1,0 +1,26 @@
+{
+    "Uncertain_Tasks": [
+        {
+            "Uncertain Task": "Define Leeching Mode Behavior (DFLMB)",
+            "Design Decisions": [
+                "D3.3. Compromise (C)",
+                "D3.2. Selfish (S)",
+                "D3.1. Benevolent (B)"
+            ]
+        },
+        {
+            "Uncertain Task": "Enable Mode Transitions (EMT)",
+            "Design Decisions": [
+                "Without seeding (WNS)",
+                "With Seeding (WS)"
+            ]
+        },
+        {
+            "Uncertain Task": "Implement Download Initiation (IDI)",
+            "Design Decisions": [
+                "Downloads w/o restart (DNR)",
+                "Downloads with restart (DCR)"
+            ]
+        }
+    ]
+}
