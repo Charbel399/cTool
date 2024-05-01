@@ -78,6 +78,7 @@ class SimpleUI:
 
         self.button_analysis = tk.Button(self.button_frame, text="8. Analyse", command=self.Analysis_of_files, compound=tk.LEFT)
         self.button_analysis.pack(fill="x", padx=10, pady=5)
+        self.button_analysis.bind("<Button-3>", lambda event: self.show_help("This button produces a report a pdf format for better understanding and assessment of the situation."))
 
         # Configure grid weights to make text field expandable
         master.grid_rowconfigure(0, weight=1)
