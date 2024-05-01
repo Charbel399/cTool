@@ -1,5 +1,5 @@
 {
-  "Solution1": {
+  "Concretization 1": {
     "Et": "False",
     "Ca": "False",
     "Aa": "False",
@@ -14,7 +14,7 @@
     "Da": "False",
     "Ga": "False"
   },
-  "Solution2": {
+  "Concretization 2": {
     "Et": "False",
     "Ca": "True",
     "Aa": "False",
@@ -29,7 +29,7 @@
     "Da": "False",
     "Ga": "False"
   },
-  "Solution3": {
+  "Concretization 3": {
     "Et": "True",
     "Ca": "True",
     "Aa": "True",
@@ -44,7 +44,7 @@
     "Da": "False",
     "Ga": "True"
   },
-  "Solution4": {
+  "Concretization 4": {
     "Et": "True",
     "Ca": "False",
     "Aa": "True",
@@ -59,7 +59,7 @@
     "Da": "False",
     "Ga": "True"
   },
-  "Solution5": {
+  "Concretization 5": {
     "Et": "False",
     "Ca": "False",
     "Aa": "True",
@@ -74,7 +74,7 @@
     "Da": "True",
     "Ga": "False"
   },
-  "Solution6": {
+  "Concretization 6": {
     "Et": "False",
     "Ca": "True",
     "Aa": "True",

@@ -1,0 +1,22 @@
+{
+    "Stakeholder Design Solutions": {
+        "Stakeholder1": [
+            "Concretization 3"
+        ],
+        "Stakeholder2": [
+            "Concretization 3"
+        ],
+        "Stakeholder3": [
+            "Concretization 4",
+            "Concretization 3"
+        ],
+        "Stakeholder4": [
+            "Concretization 6",
+            "Concretization 3"
+        ],
+        "Stakeholder5": [
+            "Concretization 4",
+            "Concretization 3"
+        ]
+    }
+}
