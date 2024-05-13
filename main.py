@@ -155,7 +155,7 @@ class SimpleUI:
 
         try:
             extract_uncertainty_tasks.extract_uncertainty(merged_output_file, uncertain_tasks_output)
-            self.output_field.insert(tk.END, "Tasks with uncertainty Generated.\n")
+            self.output_field.insert(tk.END, "Tasks with uncertainty Generated and can be found in {}\n".format(uncertain_tasks_output))
         except Exception as e:
             self.output_field.insert(tk.END, f"Error extracting tasks with uncertainty: {str(e)}\n")
 
@@ -167,7 +167,7 @@ class SimpleUI:
 
         try:
             satisfied_design_decisions.find_satisfied_design_decisions(uncertain_tasks_output, merged_output_file, goal_model_design_decision_output)
-            self.output_field.insert(tk.END, "Decision scenario generated successfully.\n")
+            self.output_field.insert(tk.END, "Decision scenario generated successfully and can be found in {}\n".format(goal_model_design_decision_output))
         except Exception as e:
             self.output_field.insert(tk.END, f"Error extracting satisfied design decisions: {str(e)}\n")
 
@@ -253,10 +253,10 @@ class SimpleUI:
 
         try:
             Analysis.merge_json_files(json_file_paths1, output_folder + "/Stakeholder_Choices.json")
-            print(output_folder)
             Analysis.analyze_stakeholder("Stakeholder1", output_folder + "/Stakeholders_report.json", output_folder + "/Stakeholder_Choices.json", output_folder)
             os.remove(output_folder + "/Stakeholder_Choices.json")
-            self.output_field.insert(tk.END, "Analysis Generated.\n")
+            Analysis.generate_pdf_from_json(output_folder + "/report.json", output_folder + "/report.pdf")
+            self.output_field.insert(tk.END, "Analysis PDF Generated and can be found in {}/report.pdf\n".format(output_folder))
         except Exception as e:
             self.output_field.insert(tk.END, f"Error generating Analysis: {str(e)}\n")
 
