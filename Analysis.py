@@ -45,22 +45,6 @@ def merge_json_files(json_file_paths, output_file_path):
     except Exception as e:
         print(f"Error: {e}")
 
-def generate_pdf(content, output_filename):
-    doc = SimpleDocTemplate(output_filename, pagesize=letter)
-
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
-
-    flowables = []
-
-    for line in content:
-        if line.strip():
-            p = Paragraph(line.strip(), styles['Justify'])
-            flowables.append(p)
-            flowables.append(Spacer(1, 12))  # Add space between paragraphs
-
-    doc.build(flowables)
-
 def analyze_stakeholder(stakeholder, solution, design_decision, output_filename):
     with open(solution, 'r') as file:
         solutions = json.load(file)
@@ -72,7 +56,14 @@ def analyze_stakeholder(stakeholder, solution, design_decision, output_filename)
 
     for other_stakeholder in solutions["Stakeholder Design Solutions"]:
         if other_stakeholder != stakeholder:
-            content.append('<para align=center spaceb=20><b>Analysis between {} and {}:</b></para>'.format(stakeholder, other_stakeholder))
+            section = {
+                'stakeholder': stakeholder,
+                'other_stakeholder': other_stakeholder,
+                'title': 'Analysis between {} and {}:'.format(stakeholder, other_stakeholder),
+                'solutions': {},
+                'decisions': {},
+                'conflicts': {}
+            }
             
             # Solutions
             stakeholder_solutions = solutions["Stakeholder Design Solutions"][stakeholder]
@@ -80,9 +71,8 @@ def analyze_stakeholder(stakeholder, solution, design_decision, output_filename)
             differing_solutions = list(set(stakeholder_solutions) ^ set(other_solutions))
             common_solutions = list(set(stakeholder_solutions) & set(other_solutions))
 
-            content.append('<para align=left spaceb=20><b>Solutions in common:</b><br/>{}</para>'.format(', '.join(common_solutions)))
-            if differing_solutions:
-                content.append('<para align=left spaceb=20><b>Solutions that differ:</b><br/>{}</para>'.format(', '.join(differing_solutions)))
+            section['solutions']['common_solutions'] = common_solutions
+            section['solutions']['differing_solutions'] = differing_solutions
 
             # Decisions
             decisions = design_decisions[stakeholder]["Satisfied_Design_Decisions"]
@@ -90,18 +80,76 @@ def analyze_stakeholder(stakeholder, solution, design_decision, output_filename)
             differing_decisions = list(set(decisions) ^ set(other_decisions))
             same_decisions = list(set(decisions) & set(other_decisions))
 
-            content.append('<para align=left spaceb=20><b>Decisions in common:</b><br/>{}</para>'.format(', '.join(same_decisions)))
-            if differing_decisions:
-                content.append('<para align=left spaceb=20><b>Decisions that differ:</b><br/>{}</para>'.format(', '.join(differing_decisions)))
+            section['decisions']['same_decisions'] = same_decisions
+            section['decisions']['differing_decisions'] = differing_decisions
 
             # Conflicting Solutions
-            conflicting_solutions = list(set(stakeholder_solutions) & set(other_solutions))
-            for solution in conflicting_solutions:
-                if differing_solutions:
-                    content.append('<para align=left spaceb=20><b>Solution {} is a conflict between {} and {}.</b><br/><b>Decisions causing the conflict:</b><br/>{}</para>'.format(', '.join(differing_solutions), stakeholder, other_stakeholder, ', '.join(differing_decisions)))
-                else:
-                    content.append('<para align=left spaceb=20><b>There are no conflicts between {} and {}.</b></para>'.format(stakeholder, other_stakeholder))
+            conflicting_solutions = list(set(stakeholder_solutions) ^ set(other_solutions))
+            section['conflicts']['conflicting_solutions'] = conflicting_solutions
 
-            content.append('<para spaceb=20></para>')
+            content.append(section)
 
-    generate_pdf(content, output_filename + "/report.pdf")
+    with open(output_filename + "/report.json", 'w') as outfile:
+        json.dump(content, outfile, indent=4)
+
+def generate_pdf_from_json(input_filename, output_filename):
+    with open(input_filename, 'r') as infile:
+        content = json.load(infile)
+
+    doc = SimpleDocTemplate(output_filename, pagesize=letter)
+
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+
+    flowables = []
+
+    for section in content:
+        stakeholder = section.get('stakeholder')
+        other_stakeholder = section.get('other_stakeholder')
+
+        if stakeholder and other_stakeholder:
+            title = section.get('title')
+            if title:
+                p = Paragraph('<b>{}</b>'.format(title), styles['Justify'])
+                flowables.append(p)
+                flowables.append(Spacer(1, 12))  # Add space between paragraphs
+
+            common_solutions = section.get('solutions', {}).get('common_solutions')
+            if common_solutions:
+                p = Paragraph('<b>Solutions in common:</b><br/>{}'.format(', '.join(common_solutions)), styles['Justify'])
+                flowables.append(p)
+                flowables.append(Spacer(1, 12))
+
+            differing_solutions = section.get('solutions', {}).get('differing_solutions')
+            if differing_solutions:
+                p = Paragraph('<b>Solutions that differ:</b><br/>{}'.format(', '.join(differing_solutions)), styles['Justify'])
+                flowables.append(p)
+                flowables.append(Spacer(1, 12))
+
+            same_decisions = section.get('decisions', {}).get('same_decisions')
+            if same_decisions:
+                p = Paragraph('<b>Decisions in common:</b><br/>{}'.format(', '.join(same_decisions)), styles['Justify'])
+                flowables.append(p)
+                flowables.append(Spacer(1, 12))
+
+            differing_decisions = section.get('decisions', {}).get('differing_decisions')
+            if differing_decisions:
+                p = Paragraph('<b>Decisions that differ:</b><br/>{}'.format(', '.join(differing_decisions)), styles['Justify'])
+                flowables.append(p)
+                flowables.append(Spacer(1, 12))
+
+            conflicting_solutions = section.get('conflicts', {}).get('conflicting_solutions')
+            if conflicting_solutions:
+                for solution in conflicting_solutions:
+                    if differing_decisions:
+                        p = Paragraph('<b>Solution {} is a conflict between {} and {}.</b><br/><b>Decisions causing the conflict:</b><br/>{}'.format(solution, stakeholder, other_stakeholder, ', '.join(differing_decisions)), styles['Justify'])
+                        flowables.append(p)
+                        flowables.append(Spacer(1, 12))
+            else:
+                p = Paragraph('<b>There are no conflicts between {} and {}.</b>'.format(stakeholder, other_stakeholder), styles['Justify'])
+                flowables.append(p)
+                flowables.append(Spacer(1, 12))
+
+            flowables.append(Spacer(1, 20))
+
+    doc.build(flowables)
