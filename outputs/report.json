@@ -1,0 +1,106 @@
+[
+    {
+        "stakeholder": "Stakeholder1",
+        "other_stakeholder": "Stakeholder2",
+        "title": "Analysis between Stakeholder1 and Stakeholder2:",
+        "solutions": {
+            "common_solutions": [
+                "Concretization 3"
+            ],
+            "differing_solutions": []
+        },
+        "decisions": {
+            "same_decisions": [
+                "Downloads with restart (DCR)",
+                "D3.3. Compromise (C)"
+            ],
+            "differing_decisions": [
+                "With Seeding (WS)"
+            ]
+        },
+        "conflicts": {
+            "conflicting_solutions": []
+        }
+    },
+    {
+        "stakeholder": "Stakeholder1",
+        "other_stakeholder": "Stakeholder3",
+        "title": "Analysis between Stakeholder1 and Stakeholder3:",
+        "solutions": {
+            "common_solutions": [
+                "Concretization 3"
+            ],
+            "differing_solutions": [
+                "Concretization 4"
+            ]
+        },
+        "decisions": {
+            "same_decisions": [
+                "With Seeding (WS)",
+                "D3.3. Compromise (C)"
+            ],
+            "differing_decisions": [
+                "Downloads with restart (DCR)"
+            ]
+        },
+        "conflicts": {
+            "conflicting_solutions": [
+                "Concretization 4"
+            ]
+        }
+    },
+    {
+        "stakeholder": "Stakeholder1",
+        "other_stakeholder": "Stakeholder4",
+        "title": "Analysis between Stakeholder1 and Stakeholder4:",
+        "solutions": {
+            "common_solutions": [
+                "Concretization 3"
+            ],
+            "differing_solutions": [
+                "Concretization 6"
+            ]
+        },
+        "decisions": {
+            "same_decisions": [
+                "With Seeding (WS)",
+                "Downloads with restart (DCR)"
+            ],
+            "differing_decisions": [
+                "D3.3. Compromise (C)"
+            ]
+        },
+        "conflicts": {
+            "conflicting_solutions": [
+                "Concretization 6"
+            ]
+        }
+    },
+    {
+        "stakeholder": "Stakeholder1",
+        "other_stakeholder": "Stakeholder5",
+        "title": "Analysis between Stakeholder1 and Stakeholder5:",
+        "solutions": {
+            "common_solutions": [
+                "Concretization 3"
+            ],
+            "differing_solutions": [
+                "Concretization 4"
+            ]
+        },
+        "decisions": {
+            "same_decisions": [
+                "With Seeding (WS)",
+                "D3.3. Compromise (C)"
+            ],
+            "differing_decisions": [
+                "Downloads with restart (DCR)"
+            ]
+        },
+        "conflicts": {
+            "conflicting_solutions": [
+                "Concretization 4"
+            ]
+        }
+    }
+]
