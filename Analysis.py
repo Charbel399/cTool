@@ -119,8 +119,6 @@ def generate_pdf_from_json(input_filename, output_filename):
                 p = Paragraph('<b>Solutions in common:</b><br/>{}'.format(', '.join(common_solutions)), styles['Justify'])
                 flowables.append(p)
                 flowables.append(Spacer(1, 12))
-            else:
-                print("No Common Solutions")
 
             differing_solutions = section.get('solutions', {}).get('differing_solutions')
             if differing_solutions:
