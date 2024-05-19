@@ -12,6 +12,7 @@ import merge_json_file
 import sys
 import shutil
 import Analysis
+import traceback
 
 def copy_files(source_folder, destination_folder):
     # Create destination folder if it doesn't exist
@@ -258,7 +259,10 @@ class SimpleUI:
             Analysis.generate_pdf_from_json(output_folder + "/report.json", output_folder + "/report.pdf")
             self.output_field.insert(tk.END, "Analysis PDF Generated and can be found in {}/report.pdf\n".format(output_folder))
         except Exception as e:
-            self.output_field.insert(tk.END, f"Error generating Analysis: {str(e)}\n")
+            error_message = f"Error generating Analysis: {str(e)}\n"
+            detailed_error_message = traceback.format_exc()
+            self.output_field.insert(tk.END, error_message)
+            self.output_field.insert(tk.END, detailed_error_message)
 
 
 
